@@ -6,6 +6,7 @@
 <title>Nyx AR · Editorial TRAMA</title>
 <script src="https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe-v1.5.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<script src="nyx.js"></script>
 <style>
 @font-face{font-family:Catt;src:url(fonts/Cattedrale-Demo-Regular.ttf)}
 @font-face{font-family:Cush;src:url(fonts/LTCushion-Medium.ttf);font-weight:500}
@@ -33,26 +34,29 @@ body{background:transparent}
 <div id="hint">APUNTA A LA CARTA</div>
 <div id="msg"></div>
 
-<a-scene id="scene" mindar-image="imageTargetSrc: carta-nyx.mind; autoStart: false; uiLoading: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.001"
+<a-scene id="scene" mindar-image="imageTargetSrc: carta-nyx.mind; autoStart: false; uiLoading: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.001; missTolerance: 8; warmupTolerance: 3"
   color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
   <a-assets><a-asset-item id="nyx" src="nyx.glb"></a-asset-item></a-assets>
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-  <a-entity light="type: ambient; intensity: 1.2"></a-entity>
-  <a-entity light="type: directional; intensity: 2.2" position="0.5 1 1.5"></a-entity>
-  <a-entity light="type: directional; color: #00E1FF; intensity: 0.8" position="-1 0.5 -1"></a-entity>
+  <a-entity light="type: hemisphere; color: #ffffff; groundColor: #5a1fc0; intensity: 1.1"></a-entity>
+  <a-entity light="type: directional; intensity: 1.9" position="0.6 1.2 1.6"></a-entity>
+  <a-entity light="type: directional; color: #00E1FF; intensity: 1.6" position="-1.2 0.6 -0.4"></a-entity>
   <a-entity id="target" mindar-image-target="targetIndex: 0">
-    <!-- Nyx sale de la carta: de pie sobre el plano de la carta -->
-    <a-entity rotation="90 0 0" position="0 -0.15 0">
+    <!-- Nyx de pie al borde inferior de la carta, mirando a la cámara, levemente inclinado hacia afuera -->
+    <a-entity rotation="18 0 0" position="0 -0.3 0.04">
       <a-entity id="pop" scale="0.001 0.001 0.001"
-        animation__in="property: scale; to: 0.085 0.085 0.085; dur: 900; easing: easeOutBack; startEvents: aparece"
+        animation__in="property: scale; to: 1 1 1; dur: 1100; easing: easeOutElastic; elasticity: 500; startEvents: aparece"
+        animation__giro="property: rotation; from: 0 -360 0; to: 0 0 0; dur: 1100; easing: easeOutCubic; startEvents: aparece"
         animation__out="property: scale; to: 0.001 0.001 0.001; dur: 250; startEvents: desaparece">
-        <a-entity gltf-model="#nyx"
-          animation__flota="property: position; from: 0 0 0; to: 0 0.6 0; dir: alternate; loop: true; dur: 1800; easing: easeInOutSine"
-          animation__gira="property: rotation; from: 0 -25 0; to: 0 25 0; dir: alternate; loop: true; dur: 4200; easing: easeInOutSine"></a-entity>
+        <a-entity nyx-sigilo position="0 0.4 -0.06" scale="1.05 1.05 1.05"></a-entity>
+        <a-entity nyx-chispas="n: 16; radio: 0.5; alto: 0.95" position="0 0.02 0.1"></a-entity>
+        <a-entity animation__flota="property: position; from: 0 0 0; to: 0 0.05 0; dir: alternate; loop: true; dur: 1600; easing: easeInOutSine">
+          <a-entity gltf-model="#nyx" nyx-toon position="0 0 0.18" scale="0.125 0.125 0.125"
+            animation__gira="property: rotation; from: 0 -18 0; to: 0 18 0; dir: alternate; loop: true; dur: 3800; easing: easeInOutSine"></a-entity>
+        </a-entity>
       </a-entity>
     </a-entity>
-  </a-entity>
-</a-scene>
+  </a-entity></a-scene>
 
 <script>
 const scene=document.getElementById('scene'),pop=document.getElementById('pop'),hint=document.getElementById('hint'),t=document.getElementById('target');
