@@ -23,7 +23,7 @@ AFRAME.registerComponent('nyx-toon',{
         }else if(nombre==='NyxOjos'){
           m=new THREE.MeshBasicMaterial({color:'#ff3df5'}); // brillo propio
         }else if(nombre.indexOf('NyxPlata')===0){
-          m=new THREE.MeshToonMaterial({color:'#d9d9e4',gradientMap:rampa});
+          m=new THREE.MeshToonMaterial({color:'#8a8a9c',gradientMap:rampa});
         }else{
           // cuerpo y alas: textura pintada a mano + sombreado por tonos
           m=new THREE.MeshToonMaterial({map:src.map||null,color:src.map?'#ffffff':src.color,gradientMap:rampa,
@@ -73,11 +73,16 @@ AFRAME.registerComponent('nyx-chispas',{
       sp.userData={a:Math.random()*Math.PI*2,v:0.2+Math.random()*0.5,h:Math.random()*this.data.alto,f:Math.random()*6,s};
       this.el.object3D.add(sp); this.chispas.push(sp);
     }
+    // al tocar a Nyx: estallido de destellos durante ~1,2 s
+    this.estallido=0; this.ahora=0;
+    this.el.addEventListener('estalla',()=>{this.estallido=this.ahora+1200;});
   },
   tick(t){
-    const R=this.data.radio, A=this.data.alto;
-    this.chispas.forEach(sp=>{const u=sp.userData; const a=u.a+t/1000*u.v*0.6;
+    this.ahora=t;
+    const b=this.estallido>t?(this.estallido-t)/1200:0;          // 1 → 0
+    const R=this.data.radio*(1+0.9*b), A=this.data.alto;
+    this.chispas.forEach(sp=>{const u=sp.userData; const a=u.a+t/1000*u.v*(0.6+4*b);
       sp.position.set(Math.cos(a)*R*(0.7+0.3*Math.sin(u.f)), (u.h+t/1000*u.v*0.15)%A, Math.sin(a)*R*0.5);
-      const k=0.5+0.5*Math.sin(t/300*u.v+u.f); sp.material.opacity=k; sp.scale.setScalar(u.s*(0.6+0.6*k));});
+      const k=Math.min(1,0.5+0.5*Math.sin(t/300*u.v+u.f)+b); sp.material.opacity=k; sp.scale.setScalar(u.s*(0.6+0.6*k)*(1+b));});
   }
 });

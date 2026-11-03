@@ -15,27 +15,53 @@ html,body{margin:0;height:100%;overflow:hidden;font-family:Cush,system-ui,sans-s
 /* el fondo va solo en html: si el body tiene fondo, tapa el video de la cámara (MindAR lo pone detrás con z-index negativo) */
 html{background:#181B1C}
 body{background:transparent}
-#intro{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;color:#fff;background:radial-gradient(circle at 50% 40%,#590FBC 0,#2a0a5a 55%,#181B1C 100%)}
-#intro img{width:64px}
-#intro h1{font:400 64px/1 Catt;margin:0}
-#intro p{font-weight:500;font-size:16px;line-height:1.45;max-width:320px;margin:0;opacity:.9}
-#intro button{font:900 15px Cush;letter-spacing:.14em;color:#181B1C;background:#00E1FF;border:0;border-radius:999px;padding:16px 30px}
+#intro{position:fixed;inset:0;z-index:10;overflow:hidden;color:#fff;text-align:center;background:#181B1C url(grunge.jpg) center/cover}
+#intro::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 48%,rgba(89,15,188,.55) 0,rgba(24,27,28,.2) 55%,rgba(14,15,16,.75) 100%)}
+#intro .top{position:absolute;top:max(18px,env(safe-area-inset-top));left:0;right:0;font:400 24px/1 Catt;z-index:3}
+#intro .cara{position:absolute;width:150vw;height:150vw;left:-31vw;top:calc(50vh - 67.5vw);background:url(nyx-cara.png) center/contain no-repeat;z-index:1}
+#intro .logo{position:absolute;width:86vw;left:7vw;top:calc(50vh - 54vw);z-index:3;filter:drop-shadow(0 3px 6px rgba(0,0,0,.4))}
+#intro .chispa{position:absolute;width:9vw;height:24vw;top:calc(50vh - 44vw);z-index:3}
+#intro .chispa.l{left:1vw}#intro .chispa.r{right:1vw}
+#intro .pie{position:absolute;left:0;right:0;bottom:max(26px,env(safe-area-inset-bottom));z-index:3;display:flex;flex-direction:column;align-items:center;gap:14px;padding:0 24px}
+#intro p{font-weight:500;font-size:15px;line-height:1.4;max-width:300px;margin:0;text-shadow:0 2px 6px rgba(0,0,0,.8)}
+#intro button{font:900 15px Cush;letter-spacing:.14em;color:#181B1C;background:#00E1FF;border:0;padding:16px 30px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);box-shadow:0 0 24px rgba(0,225,255,.5)}.a-enter-vr,.a-enter-ar,.a-fullscreen,.a-enter-vr-button,.a-enter-ar-button{display:none!important}
+#burbuja{position:fixed;left:50%;top:14vh;transform:translate(-50%,10px) scale(.9);opacity:0;z-index:8;max-width:78vw;background:#fff;color:#181B1C;font:500 16px/1.35 Cush;padding:14px 18px;text-align:center;clip-path:polygon(10px 0,100% 0,100% calc(100% - 22px),calc(50% + 12px) calc(100% - 22px),50% 100%,calc(50% - 12px) calc(100% - 22px),0 calc(100% - 22px),0 10px);padding-bottom:36px;transition:all .25s ease;pointer-events:none}
+#burbuja.on{opacity:1;transform:translate(-50%,0) scale(1)}
+#burbuja b{font:400 20px/1 Catt;color:#590FBC;display:block;margin-bottom:4px}
+#barra{position:fixed;left:0;right:0;bottom:max(22px,env(safe-area-inset-bottom));z-index:6;display:none;flex-direction:column;align-items:center;gap:10px}
+#tip{color:#fff;font:900 12px Cush;letter-spacing:.16em;text-shadow:0 1px 4px #000}
+#foto{width:66px;height:66px;border-radius:50%;border:4px solid #fff;background:#00E1FF;display:grid;place-items:center;box-shadow:0 0 22px rgba(0,225,255,.6)}
+#foto svg{width:30px;height:30px}
+#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:30;transition:opacity .35s}
+#vista{position:fixed;inset:0;z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;background:rgba(14,15,16,.94)}
+#vista img{max-width:100%;max-height:74vh;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+#vista .acc{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+#vista button,#vista a{font:900 13px Cush;letter-spacing:.12em;padding:13px 18px;border:0;text-decoration:none;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+#compartir{background:#00E1FF;color:#181B1C}#guardar{background:#590FBC;color:#fff}#cerrar{background:#fff;color:#181B1C}
 #msg{position:fixed;left:16px;right:16px;bottom:24px;z-index:20;display:none;background:#00E1FF;color:#181B1C;font-weight:500;font-size:15px;line-height:1.45;padding:16px 18px;border-radius:6px}
 #hint{position:fixed;left:0;right:0;bottom:22px;z-index:5;text-align:center;color:#fff;font-weight:900;font-size:13px;letter-spacing:.14em;text-shadow:0 1px 4px #000;display:none}
 </style>
 </head>
 <body>
 <div id="intro">
-  <img src="isotipo.png" alt="">
-  <h1>Nyx</h1>
-  <p>Apunta la cámara a la carta 001 de Nyx y espera a que salga de ella.</p>
-  <button id="go">ABRIR LA CÁMARA</button>
-</div>
-<div id="hint">APUNTA A LA CARTA</div>
+  <div class="top">Editorial digital</div>
+  <div class="cara"></div>
+  <svg class="chispa l" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M50 0C53 40 60 47 100 50C60 53 53 60 50 100C47 60 40 53 0 50C40 47 47 40 50 0Z" fill="#fff"/></svg>
+  <svg class="chispa r" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M50 0C53 40 60 47 100 50C60 53 53 60 50 100C47 60 40 53 0 50C40 47 47 40 50 0Z" fill="#fff"/></svg>
+  <img class="logo" src="logo.png" alt="Editorial TRAMA">
+  <div class="pie">
+    <p>Apunta la cámara a la carta 001 y deja que Nyx abra la TRAMA.</p>
+    <button id="go">ABRIR LA CÁMARA</button>
+  </div>
+</div><div id="hint">APUNTA A LA CARTA</div>
 <div id="msg"></div>
+<div id="burbuja"></div>
+<div id="barra"><span id="tip">TOCA A NYX</span><button id="foto" aria-label="Tomar foto"><svg viewBox="0 0 24 24"><path d="M4 7h3l2-3h6l2 3h3v13H4z" fill="none" stroke="#181B1C" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="4" fill="none" stroke="#181B1C" stroke-width="2"/></svg></button></div>
+<div id="flash"></div>
+<div id="vista"><img id="vimg" alt="Foto con Nyx"><div class="acc"><button id="compartir">COMPARTIR</button><a id="guardar" download="nyx-trama.jpg">GUARDAR</a><button id="cerrar">CERRAR</button></div></div>
 
 <a-scene id="scene" mindar-image="imageTargetSrc: carta-nyx.mind; autoStart: false; uiLoading: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.001; missTolerance: 8; warmupTolerance: 3"
-  color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+  color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true; preserveDrawingBuffer: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
   <a-assets><a-asset-item id="nyx" src="nyx.glb"></a-asset-item></a-assets>
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
   <a-entity light="type: hemisphere; color: #ffffff; groundColor: #5a1fc0; intensity: 1.1"></a-entity>
@@ -49,10 +75,13 @@ body{background:transparent}
         animation__giro="property: rotation; from: 0 -360 0; to: 0 0 0; dur: 1100; easing: easeOutCubic; startEvents: aparece"
         animation__out="property: scale; to: 0.001 0.001 0.001; dur: 250; startEvents: desaparece">
         <a-entity nyx-sigilo position="0 0.4 -0.06" scale="1.05 1.05 1.05"></a-entity>
-        <a-entity nyx-chispas="n: 16; radio: 0.5; alto: 0.95" position="0 0.02 0.1"></a-entity>
+        <a-entity id="chispas" nyx-chispas="n: 16; radio: 0.5; alto: 0.95" position="0 0.02 0.1"></a-entity>
         <a-entity animation__flota="property: position; from: 0 0 0; to: 0 0.05 0; dir: alternate; loop: true; dur: 1600; easing: easeInOutSine">
+          <a-entity id="salto" animation__sube="property: position; from: 0 0 0; to: 0 0.24 0; dur: 260; dir: alternate; loop: 2; easing: easeOutQuad; startEvents: salta"
+            animation__vuelta="property: rotation; from: 0 0 0; to: 0 360 0; dur: 620; easing: easeInOutCubic; startEvents: salta">
           <a-entity gltf-model="#nyx" nyx-toon position="0 0 0.18" scale="0.125 0.125 0.125"
             animation__gira="property: rotation; from: 0 -18 0; to: 0 18 0; dir: alternate; loop: true; dur: 3800; easing: easeInOutSine"></a-entity>
+          </a-entity>
         </a-entity>
       </a-entity>
     </a-entity>
@@ -90,8 +119,60 @@ document.getElementById('go').addEventListener('click',async()=>{
 });
 scene.addEventListener('arReady',()=>{hint.textContent='APUNTA A LA CARTA';});
 scene.addEventListener('arError',()=>{aviso('No se pudo iniciar la cámara. Recarga la página y vuelve a tocar <b>ABRIR LA CÁMARA</b>.');});
-t.addEventListener('targetFound',()=>{hint.style.display='none';pop.emit('aparece');});
-t.addEventListener('targetLost',()=>{hint.style.display='block';pop.emit('desaparece');});
+t.addEventListener('targetFound',()=>{hint.style.display='none';pop.emit('aparece');visible=true;barra.style.display='flex';});
+t.addEventListener('targetLost',()=>{hint.style.display='block';pop.emit('desaparece');visible=false;barra.style.display='none';burbuja.classList.remove('on');});
+</script>
+<script>
+/* ===== Interacción: tocar a Nyx y tomar foto ===== */
+let visible=false, ocupado=false, ultima=-1;
+const barra=document.getElementById('barra'), burbuja=document.getElementById('burbuja');
+const salto=document.getElementById('salto'), chispas=document.getElementById('chispas');
+const FRASES=['¿Otra vez lo mismo? Hay una puerta que todavía no abres.','Esta historia no está en todas partes. Está aquí.','Guárdala. Las buenas no vuelven a aparecer.','¿Qué atesoras?','Yo no abro la puerta. Tú tienes la llave.'];
+function reaccionar(){
+  if(!visible||ocupado) return; ocupado=true;
+  salto.emit('salta'); chispas.emit('estalla');
+  let i; do{ i=Math.floor(Math.random()*FRASES.length); }while(i===ultima&&FRASES.length>1); ultima=i;
+  burbuja.innerHTML='<b>Nyx</b>'+FRASES[i]; burbuja.classList.add('on');
+  if(navigator.vibrate) navigator.vibrate(30);
+  setTimeout(()=>{burbuja.classList.remove('on');},3200);
+  setTimeout(()=>{ocupado=false;},900);
+}
+document.addEventListener('pointerdown',e=>{ if(e.target.closest('#barra,#vista,#intro,#msg')) return; reaccionar(); });
+
+function esquinas(g,x,y,w,h,c){ g.beginPath(); g.moveTo(x+c,y); g.lineTo(x+w,y); g.lineTo(x+w,y+h-c); g.lineTo(x+w-c,y+h); g.lineTo(x,y+h); g.lineTo(x,y+c); g.closePath(); }
+async function tomarFoto(){
+  const W=innerWidth, H=innerHeight, dpr=Math.min(devicePixelRatio||1,2);
+  const c=document.createElement('canvas'); c.width=W*dpr; c.height=H*dpr; const g=c.getContext('2d'); g.scale(dpr,dpr);
+  const v=document.querySelector('video');
+  if(v&&v.videoWidth){ const r=v.getBoundingClientRect(); g.drawImage(v,r.left,r.top,r.width,r.height); }
+  const cv=scene.canvas; if(cv&&cv.width&&cv.height){ const r=cv.getBoundingClientRect(); g.drawImage(cv,r.left,r.top,r.width,r.height); }
+  // marco TRAMA
+  const m=14, k=Math.min(W,H);
+  g.strokeStyle='#00E1FF'; g.lineWidth=4; esquinas(g,m,m,W-2*m,H-2*m,22); g.stroke();
+  const grd=g.createLinearGradient(0,H*.72,0,H); grd.addColorStop(0,'rgba(24,27,28,0)'); grd.addColorStop(1,'rgba(24,27,28,.85)'); g.fillStyle=grd; g.fillRect(0,H*.72,W,H*.28);
+  try{ await document.fonts.load('400 30px Catt'); await document.fonts.load('900 12px Cush'); }catch(e){}
+  const logo=document.querySelector('#intro .logo');
+  if(logo&&logo.complete){ const lw=k*.5, lh=lw*logo.naturalHeight/logo.naturalWidth; g.drawImage(logo,(W-lw)/2,H-m-lh-46,lw,lh); }
+  g.fillStyle='#fff'; g.textAlign='center'; g.font='900 '+Math.round(k*.032)+'px Cush';
+  g.fillText('ABRE LA TRAMA  ·  CARTA 001',W/2,H-m-24);
+  g.fillStyle='#00E1FF'; g.font='400 '+Math.round(k*.06)+'px Catt'; g.textAlign='left'; g.fillText('Nyx',m+16,m+k*.09);
+  return new Promise(res=>c.toBlob(b=>res({blob:b,url:URL.createObjectURL(b)}),'image/jpeg',.9));
+}
+let fotoActual=null;
+document.getElementById('foto').addEventListener('click',async e=>{
+  e.stopPropagation();
+  const fl=document.getElementById('flash'); fl.style.transition='none'; fl.style.opacity=1; requestAnimationFrame(()=>{fl.style.transition='opacity .35s';fl.style.opacity=0;});
+  try{
+    fotoActual=await tomarFoto();
+    document.getElementById('vimg').src=fotoActual.url; document.getElementById('guardar').href=fotoActual.url;
+    const sh=document.getElementById('compartir'); sh.style.display=(navigator.canShare&&navigator.canShare({files:[new File([fotoActual.blob],'nyx-trama.jpg',{type:'image/jpeg'})]}))?'':'none';
+    document.getElementById('vista').style.display='flex';
+  }catch(err){ aviso('No se pudo tomar la foto. Intenta de nuevo.'); }
+});
+document.getElementById('compartir').addEventListener('click',async()=>{
+  try{ await navigator.share({files:[new File([fotoActual.blob],'nyx-trama.jpg',{type:'image/jpeg'})],title:'Nyx · Editorial TRAMA',text:'Abrí la TRAMA con Nyx'}); }catch(e){}
+});
+document.getElementById('cerrar').addEventListener('click',()=>{document.getElementById('vista').style.display='none';});
 </script>
 </body>
 </html>
