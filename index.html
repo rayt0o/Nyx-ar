@@ -61,7 +61,7 @@ body{background:transparent}
 <div id="vista"><img id="vimg" alt="Foto con Nyx"><div class="acc"><button id="compartir">COMPARTIR</button><a id="guardar" download="nyx-trama.jpg">GUARDAR</a><button id="cerrar">CERRAR</button></div></div>
 
 <a-scene id="scene" mindar-image="imageTargetSrc: carta-nyx.mind; autoStart: false; uiLoading: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.001; missTolerance: 8; warmupTolerance: 3"
-  color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true; preserveDrawingBuffer: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+  color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
   <a-assets><a-asset-item id="nyx" src="nyx.glb"></a-asset-item></a-assets>
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
   <a-entity light="type: hemisphere; color: #ffffff; groundColor: #5a1fc0; intensity: 1.1"></a-entity>
@@ -145,7 +145,7 @@ async function tomarFoto(){
   const c=document.createElement('canvas'); c.width=W*dpr; c.height=H*dpr; const g=c.getContext('2d'); g.scale(dpr,dpr);
   const v=document.querySelector('video');
   if(v&&v.videoWidth){ const r=v.getBoundingClientRect(); g.drawImage(v,r.left,r.top,r.width,r.height); }
-  const cv=scene.canvas; if(cv&&cv.width&&cv.height){ const r=cv.getBoundingClientRect(); g.drawImage(cv,r.left,r.top,r.width,r.height); }
+  const cv=scene.canvas; if(cv&&cv.width&&cv.height){ scene.renderer.render(scene.object3D,scene.camera); const r=cv.getBoundingClientRect(); g.drawImage(cv,r.left,r.top,r.width,r.height); } // se renderiza justo antes de copiar
   // marco TRAMA
   const m=14, k=Math.min(W,H);
   g.strokeStyle='#00E1FF'; g.lineWidth=4; esquinas(g,m,m,W-2*m,H-2*m,22); g.stroke();
