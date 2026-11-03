@@ -1,0 +1,27 @@
+﻿<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Catt;src:url(../fonts/Cattedrale-Demo-Regular.ttf)}
+@font-face{font-family:Cush;src:url(../fonts/LTCushion-Black.ttf);font-weight:900}
+@font-face{font-family:Cush;src:url(../fonts/LTCushion-Medium.ttf);font-weight:500}
+@page{size:63mm 88mm;margin:0}
+html,body{margin:0;background:#181B1C}
+.card{width:63mm;height:88mm;position:relative;overflow:hidden;background:#590FBC;box-sizing:border-box}
+.g{position:absolute;inset:0;background:url(../assets/grunge.jpg) center/cover;mix-blend-mode:multiply;opacity:.75}
+.frame{position:absolute;inset:3mm;border:.6mm solid #181B1C;border-radius:2mm;background:radial-gradient(circle at 50% 42%,#7a2be8 0,#590FBC 38%,#2a0a5a 75%,#181B1C 100%)}
+.frame .g2{position:absolute;inset:0;background:url(../assets/grunge.jpg) center/cover;mix-blend-mode:overlay;opacity:.9;border-radius:2mm}
+.puas{position:absolute;left:0;right:0;height:9mm;background:url(../assets/puas14.png) center/auto 100% repeat-x;opacity:.95}
+.nyx{position:absolute;left:50%;top:13mm;width:54mm;transform:translateX(-50%)}
+.top{position:absolute;top:5mm;left:6mm;right:6mm;display:flex;justify-content:space-between;align-items:center;font:900 7pt Cush;color:#00E1FF;letter-spacing:.1em}
+.top img{height:7mm}
+.name{position:absolute;bottom:13mm;left:0;right:0;text-align:center;font:44pt/1 Catt;color:#fff;text-shadow:0 .6mm 0 #181B1C}
+.sub{position:absolute;bottom:7.5mm;left:0;right:0;text-align:center;font:900 6.2pt Cush;letter-spacing:.18em;color:#00E1FF}
+.ft{position:absolute;bottom:4.2mm;left:0;right:0;text-align:center;font:500 5pt Cush;color:#fff;opacity:.85;letter-spacing:.08em}
+</style></head><body>
+<div class="card"><div class="g"></div>
+ <div class="frame"><div class="g2"></div></div>
+ <div class="puas" style="top:20mm;transform:rotate(-8deg);left:-5mm;right:-5mm"></div>
+ <img class="nyx" src="../assets/nyx.png">
+ <div class="top"><span>CARTA 001</span><img src="../assets/isotipo.png"></div>
+ <div class="name">Nyx</div>
+ <div class="sub">ABRE LA TRAMA</div>
+ <div class="ft">EDITORIAL TRAMA · PROTOTIPO AR</div>
+</div></body></html>

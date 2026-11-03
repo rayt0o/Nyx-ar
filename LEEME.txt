@@ -1,0 +1,26 @@
+NYX AR · Prototipo WebAR de Editorial TRAMA (borrador para revisión del equipo)
+===========================================================================
+
+Qué hay en esta carpeta
+- index.html .............. página de la experiencia (A-Frame 1.5 + MindAR 1.2.5)
+- nyx.glb ................. Nyx exportado de nyxmirrr.blend (materiales planos en la paleta)
+- carta-nyx.mind .......... marcador compilado a partir de carta-nyx.png
+- carta-nyx.png / .html ... carta 001 (63 x 88 mm), diseño editable
+- TRAMA_carta-nyx-ar_20261103_v1.pdf ... carta lista para imprimir
+- fonts/, isotipo.png ..... recursos de la página
+
+IMPORTANTE: si cambian el diseño de la carta, hay que volver a compilar
+carta-nyx.mind (herramienta oficial: https://hiukim.github.io/mind-ar-js-doc/tools/compile).
+Si no, el celular no reconoce la carta nueva.
+
+Cómo publicarlo gratis (la cámara solo funciona con HTTPS)
+1. Crear una cuenta en github.com y un repositorio público, por ejemplo "nyx-ar".
+2. Subir TODOS los archivos de esta carpeta (Add file > Upload files).
+3. Ir a Settings > Pages > Branch: main / (root) > Save.
+4. En 1 o 2 minutos queda en https://USUARIO.github.io/nyx-ar/
+5. Generar un QR de ese enlace y ponerlo en el póster.
+
+Cómo probarlo
+- Abrir el enlace en el celular, tocar "ABRIR LA CÁMARA" y permitir la cámara.
+- Apuntar a la carta impresa o mostrada en otra pantalla, con buena luz.
+- Probar al menos en un Android y en un iPhone antes de la sustentación.
