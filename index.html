@@ -16,6 +16,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#181B1C;font-family:Cu
 #intro h1{font:400 64px/1 Catt;margin:0}
 #intro p{font-weight:500;font-size:16px;line-height:1.45;max-width:320px;margin:0;opacity:.9}
 #intro button{font:900 15px Cush;letter-spacing:.14em;color:#181B1C;background:#00E1FF;border:0;border-radius:999px;padding:16px 30px}
+#msg{position:fixed;left:16px;right:16px;bottom:24px;z-index:20;display:none;background:#00E1FF;color:#181B1C;font-weight:500;font-size:15px;line-height:1.45;padding:16px 18px;border-radius:6px}
 #hint{position:fixed;left:0;right:0;bottom:22px;z-index:5;text-align:center;color:#fff;font-weight:900;font-size:13px;letter-spacing:.14em;text-shadow:0 1px 4px #000;display:none}
 </style>
 </head>
@@ -27,6 +28,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#181B1C;font-family:Cu
   <button id="go">ABRIR LA CÁMARA</button>
 </div>
 <div id="hint">APUNTA A LA CARTA</div>
+<div id="msg"></div>
 
 <a-scene id="scene" mindar-image="imageTargetSrc: carta-nyx.mind; autoStart: false; uiLoading: no; uiScanning: no; filterMinCF: 0.0001; filterBeta: 0.001"
   color-space="sRGB" renderer="colorManagement: true; physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
@@ -51,11 +53,36 @@ html,body{margin:0;height:100%;overflow:hidden;background:#181B1C;font-family:Cu
 
 <script>
 const scene=document.getElementById('scene'),pop=document.getElementById('pop'),hint=document.getElementById('hint'),t=document.getElementById('target');
-document.getElementById('go').addEventListener('click',()=>{
-  document.getElementById('intro').style.display='none'; hint.style.display='block';
+const msg=document.getElementById('msg');
+function aviso(t){msg.innerHTML=t;msg.style.display='block';hint.style.display='none';}
+const ua=navigator.userAgent||'';
+if(/Instagram|FBAN|FBAV|WhatsApp|Line\/|TikTok/i.test(ua)){
+  aviso('Estás en el navegador de una app. Toca los <b>tres puntos</b> y elige <b>"Abrir en el navegador"</b> (Chrome o Safari).');
+}
+document.getElementById('go').addEventListener('click',async()=>{
+  if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    aviso('Este navegador no permite la cámara aquí. Abre el enlace en <b>Chrome</b> (Android) o <b>Safari</b> (iPhone).');return;
+  }
+  // Pedir el permiso primero, con el toque del usuario (más confiable en iPhone)
+  try{
+    const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
+    st.getTracks().forEach(t=>t.stop());
+  }catch(e){
+    if(e.name==='NotAllowedError'||e.name==='SecurityError'){
+      aviso('La cámara está <b>bloqueada</b> para esta página.<br><br><b>Android:</b> toca el candado junto a la dirección → Permisos → Cámara → Permitir, y recarga.<br><b>iPhone:</b> Ajustes → Safari → Cámara → Permitir, y recarga.');
+    }else if(e.name==='NotFoundError'||e.name==='OverconstrainedError'){
+      aviso('No se encontró una cámara en este dispositivo.');
+    }else if(e.name==='NotReadableError'){
+      aviso('Otra app está usando la cámara. Ciérrala y vuelve a intentar.');
+    }else{ aviso('No se pudo abrir la cámara ('+e.name+'). Recarga la página e inténtalo de nuevo.'); }
+    return;
+  }
+  document.getElementById('intro').style.display='none'; hint.style.display='block'; hint.textContent='CARGANDO CÁMARA…';
   const start=()=>scene.systems['mindar-image-system'].start();
   scene.hasLoaded?start():scene.addEventListener('loaded',start);
 });
+scene.addEventListener('arReady',()=>{hint.textContent='APUNTA A LA CARTA';});
+scene.addEventListener('arError',()=>{aviso('No se pudo iniciar la cámara. Recarga la página y vuelve a tocar <b>ABRIR LA CÁMARA</b>.');});
 t.addEventListener('targetFound',()=>{hint.style.display='none';pop.emit('aparece');});
 t.addEventListener('targetLost',()=>{hint.style.display='block';pop.emit('desaparece');});
 </script>
